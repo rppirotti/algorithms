@@ -23,7 +23,7 @@
 #ifndef TRAVERSAL_TREE_HPP_
 #define TRAVERSAL_TREE_HPP_
 
-#include <node.hpp>
+#include "node.hpp"
 #include <iostream>
 
 namespace BinaryTree {
@@ -57,7 +57,56 @@ namespace BinaryTree {
          output << std::endl;
       }
 
+      void PreOrder ( std::ostream& output )
+      {
+         PreOrder (std::cout, m_pRoot );
+      }
+
+      void InOrder ( std::ostream& output )
+      {
+         InOrder (std::cout, m_pRoot );
+      }
+
+      void PostOrder ( std::ostream& output )
+      {
+         PostOrder (std::cout, m_pRoot );
+      }
+
    private:
+
+      void PostOrder ( std::ostream& output, Node* pNode )
+      {
+         if ( NULL != pNode )
+         {
+            PostOrder (std::cout, pNode->getLeft()  );
+            PostOrder (std::cout, pNode->getRight() );
+            output << pNode->getId();
+            output << "  ";
+         }
+      }
+
+      void InOrder ( std::ostream& output, Node* pNode )
+      {
+         if ( NULL != pNode)
+         {
+            InOrder (std::cout, pNode->getLeft() );
+            output << pNode->getId();
+            output << "  ";
+            InOrder (std::cout, pNode->getRight() );
+         }
+      }
+
+      void PreOrder ( std::ostream& output, Node* pNode )
+      {
+         if ( NULL != pNode )
+         {
+            output << pNode->getId();
+            output << "  ";
+
+            PreOrder ( output, pNode->getLeft()  );
+            PreOrder ( output, pNode->getRight() );
+         }
+      }
 
       void Print ( std::ostream& output, Node* pNode, int level )
       {

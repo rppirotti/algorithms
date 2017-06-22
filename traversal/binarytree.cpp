@@ -20,7 +20,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <tree.hpp>
+#include "tree.hpp"
 
 using namespace BinaryTree;
 
@@ -36,6 +36,13 @@ int main ()
    pTree->Insert( new Node (7) );
 
    pTree->Print( std::cout );
+   std::cout << std::endl;
+   pTree->PreOrder( std::cout );
+   std::cout << std::endl;
+   pTree->InOrder( std::cout );
+   std::cout << std::endl;
+   pTree->PostOrder( std::cout );
+
 }
 
 

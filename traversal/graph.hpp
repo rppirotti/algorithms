@@ -27,10 +27,13 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <limits.h>
 
 namespace Graph {
 
    class Edge;
+
+   typedef  std::list < Edge* > EdgeList;
 
    ////////////////////////////////////////////////////////////////////////////
    ///
@@ -42,6 +45,7 @@ namespace Graph {
       : m_id      ( id )
       , m_name    ( name )
       , m_isVisited ( false )
+      , m_data    ( INT_MAX )
       { }
 
       void AddEdge ( Edge* pEdge )
@@ -49,7 +53,7 @@ namespace Graph {
          m_edgesList.push_back( pEdge );
       }
 
-      std::list<Edge*>* getEdgeListPtr ()
+      EdgeList* getEdgeListPtr ()
       {
          return &m_edgesList;
       }
@@ -59,10 +63,36 @@ namespace Graph {
          return m_name;
       }
 
+      bool getIsVisited () const
+      {
+         return m_isVisited;
+      }
+
+      void SetIsVisited ()
+      {
+         m_isVisited = true;
+      }
+
+      int getData ()
+      {
+         return m_data;
+      }
+
+      void SetData ( int data )
+      {
+         m_data = data;
+      }
+
+      int getId ()
+      {
+         return m_id;
+      }
+
    private:
       int                  m_id;
+      int                  m_data;
       std::string          m_name;
-      std::list < Edge* >  m_edgesList;
+      EdgeList             m_edgesList;
       bool                 m_isVisited;
    };
 
@@ -113,6 +143,9 @@ namespace Graph {
    class SimpleGraph
    {
    public:
+
+      typedef std::vector<Vertex*>  VertexList;
+
       SimpleGraph ( std::string name )
       : m_name ( name )
       {
@@ -126,13 +159,13 @@ namespace Graph {
       void Display ( std::ostream& output )
       {
          output << "Graph: " << m_name << std::endl;
-         for ( std::vector<Vertex*>::iterator it = m_vertexList.begin() ;
+         for ( VertexList::iterator it = m_vertexList.begin() ;
                it != m_vertexList.end() ;
                it++ )
          {
             output << "Vertex: " << (*it)->getName() << std::endl;
-            std::list<Edge*>* pEdgeList = (*it)->getEdgeListPtr();
-            for ( std::list<Edge*>::iterator it2 = pEdgeList->begin();
+            EdgeList* pEdgeList = (*it)->getEdgeListPtr();
+            for ( EdgeList::iterator it2 = pEdgeList->begin();
                   it2 != pEdgeList->end();
                   it2++ )
             {
@@ -149,9 +182,14 @@ namespace Graph {
          }
       }
 
+      VertexList&   getVertexList ()
+      {
+         return m_vertexList;
+      }
+
    private:
-      std::string          m_name;
-      std::vector<Vertex*> m_vertexList;
+      std::string    m_name;
+      VertexList     m_vertexList;
 
    };
 

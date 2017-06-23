@@ -20,14 +20,63 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef TRAVERSAL_TREE_HPP_
-#define TRAVERSAL_TREE_HPP_
+#ifndef TREE_HPP
+#define TREE_HPP
 
-#include "node.hpp"
 #include <iostream>
 
 namespace BinaryTree {
 
+   ////////////////////////////////////////////////////////////////////////////
+   ///
+   ////////////////////////////////////////////////////////////////////////////
+   class Node
+   {
+   public:
+      Node ( int id, std::string name = "" )
+      : m_id   ( id )
+      , m_name ( name  )
+      , m_pLeft  ( NULL )
+      , m_pRight ( NULL )
+      { }
+
+      Node* getLeft ()
+      {
+         return m_pLeft;
+      }
+      Node* getRight ()
+      {
+         return m_pRight;
+      }
+      std::string getName ()
+      {
+         return m_name;
+      }
+      int   getId ()
+      {
+         return m_id;
+      }
+
+      void SetLeft ( Node* pLeft )
+      {
+         m_pLeft = pLeft;
+      }
+      void SetRight ( Node* pRight )
+      {
+         m_pRight = pRight;
+      }
+
+   private:
+      int                  m_id;
+      std::string          m_name;
+      Node*                m_pLeft;
+      Node*                m_pRight;
+   };
+
+
+   ////////////////////////////////////////////////////////////////////////////
+   ///
+   ////////////////////////////////////////////////////////////////////////////
    class Tree
    {
    public:
@@ -162,4 +211,4 @@ namespace BinaryTree {
 
 }
 
-#endif /* TRAVERSAL_TREE_HPP_ */
+#endif

@@ -124,7 +124,7 @@ void Dijkstra ( std::ostream& output, SimpleGraph* pGraph, std::string sourceNam
    output << std::endl;
 }
 
-int*  createAdjacentArray ( SimpleGraph* pGraph )
+int*  createAdjacentArray ( std::ostream& output, SimpleGraph* pGraph )
 {
    // Allocate a 2D array as a single block of memory
    int*   pAdjacentArray = new int[ pGraph->getVertexList().size() * pGraph->getVertexList().size() ];
@@ -168,15 +168,6 @@ int*  createAdjacentArray ( SimpleGraph* pGraph )
       }
    }
 
-   return pAdjacentArray;
-}
-
-void DijkstraOptimized ( std::ostream& output, SimpleGraph* pGraph, std::string sourceName )
-{
-   int*  pAdjacentArray = createAdjacentArray( pGraph );
-   int   sourceIndex    = 0;
-   int   graphListSize  = pGraph->getVertexList().size();
-
    // Print array output for debugging
    for ( int row=0; row < graphListSize; row++ )
    {
@@ -186,6 +177,15 @@ void DijkstraOptimized ( std::ostream& output, SimpleGraph* pGraph, std::string 
       }
       output << std::endl;
    }
+
+   return pAdjacentArray;
+}
+
+void DijkstraOptimized ( std::ostream& output, SimpleGraph* pGraph, std::string sourceName )
+{
+   int*  pAdjacentArray = createAdjacentArray( output, pGraph );
+   int   sourceIndex    = 0;
+   int   graphListSize  = pGraph->getVertexList().size();
 
    // Array to hold minimum calculated distances
    int*  pMinDistance   = new int[graphListSize];
@@ -262,6 +262,9 @@ struct VertexInfo
    int   m_color;
 };
 
+
+typedef std::vector <VertexInfo> VertexList;
+
 bool orderByValence ( VertexInfo a, VertexInfo b)
 {
    bool status = false;
@@ -272,12 +275,28 @@ bool orderByValence ( VertexInfo a, VertexInfo b)
    return status;
 }
 
+int   searchOrderedVertexById ( int id, VertexList& vertexList  )
+{
+   bool hasFound = false;
+   int   i = 0;
+   for ( VertexList::iterator it = vertexList.begin();
+         it != vertexList.end() && false == hasFound;
+         it++, i++ )
+   {
+      if ( id == it->m_id )
+      {
+         hasFound = true;
+      }
+   }
+   return --i;
+}
+
 void WelshPowellColoredGraph ( std::ostream& output, SimpleGraph* pGraph )
 {
-   int*  pAdjacentArray = createAdjacentArray( pGraph );
+   int*  pAdjacentArray = createAdjacentArray( output, pGraph );
    int   numOfVertex    = pGraph->getVertexList().size();
 
-   std::vector <VertexInfo> vertexList ( numOfVertex );
+   VertexList vertexList ( numOfVertex );
 
    for (int row=0; row < numOfVertex; row++ )
    {
@@ -296,35 +315,56 @@ void WelshPowellColoredGraph ( std::ostream& output, SimpleGraph* pGraph )
 
    std::sort(vertexList.begin(), vertexList.end(), orderByValence );
 
-   for (std::vector<VertexInfo>::iterator it = vertexList.begin();
+   for (VertexList::iterator it = vertexList.begin();
          it != vertexList.end();
          it++ )
    {
       output << "Id: " << it->m_id << " Valence: " << it->m_valence << std::endl;
    }
 
-   int color = 1;
-
-   // Set the color for first vertex (highest valence)
-   vertexList[0].m_color = color;
-
-
-   for ( int i=1; i < numOfVertex; i++ )
+   int index = 0;
+   int thisTimeColoured = 0;
+   bool hasColoured = true;   // Tricky initialization for the loop to work correctly
+   for ( int loop = 0, color = 1; true == hasColoured; loop++, color++ )
    {
-      bool isConnected = true;
-      for (std::vector<VertexInfo>::iterator it = vertexList.begin();
-            it != vertexList.end();
-            it++ )
+      hasColoured = false;
+      // First step is to assign a color to the highest valence that has
+      // not been coloured yet.
+      index = 0;
+      for ( ; index < numOfVertex && false == hasColoured; index++ )
       {
-         if ( ( INT_MAX != pAdjacentArray [ i * numOfVertex + it->m_id ] && it->m_color != color ) ||
-               INT_MAX == pAdjacentArray [ i * numOfVertex + it->m_id ] )
+         if ( 0 == vertexList[index].m_color )
          {
-            isConnected = false;
+            vertexList[index].m_color = color;
+            thisTimeColoured = index;
+            hasColoured = true;
          }
       }
-      if ( false == isConnected )
+      if ( true == hasColoured )
       {
-         vertexList [ i ].m_color = color;
+         // Now we need to scan all other vertices, not coloured yet, that is
+         // not connected to the current color.
+         for (  ; index < numOfVertex; index++ )
+         {
+            bool isConnected = false;
+            if ( 0 == vertexList[index].m_color)
+            {
+               for (int column=0; column<numOfVertex; column++)
+               {
+                  if ( INT_MAX != pAdjacentArray [ vertexList[index].m_id * numOfVertex + column ] )
+                  {
+                     if ( color == vertexList [ searchOrderedVertexById(column, vertexList) ].m_color )
+                     {
+                        isConnected = true;
+                     }
+                  }
+               }
+               if ( false == isConnected )
+               {
+                  vertexList[index].m_color = color;
+               }
+            }
+         }
       }
    }
 

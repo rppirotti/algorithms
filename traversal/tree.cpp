@@ -24,25 +24,25 @@
 
 using namespace BinaryTree;
 
-int main ()
-{
-   Tree* pTree = new Tree;
-
-   pTree->Insert( new Node (8) );
-   pTree->Insert( new Node (9) );
-   pTree->Insert( new Node (5) );
-   pTree->Insert( new Node (11) );
-   pTree->Insert( new Node (3) );
-   pTree->Insert( new Node (7) );
-
-   pTree->Print( std::cout );
-   std::cout << std::endl;
-   pTree->PreOrder( std::cout );
-   std::cout << std::endl;
-   pTree->InOrder( std::cout );
-   std::cout << std::endl;
-   pTree->PostOrder( std::cout );
-
-}
-
+//int main ()
+//{
+//   Tree* pTree = new Tree;
+//
+//   pTree->Insert( new Node (8) );
+//   pTree->Insert( new Node (9) );
+//   pTree->Insert( new Node (5) );
+//   pTree->Insert( new Node (11) );
+//   pTree->Insert( new Node (3) );
+//   pTree->Insert( new Node (7) );
+//
+//   pTree->Print( std::cout );
+//   std::cout << std::endl;
+//   pTree->PreOrder( std::cout );
+//   std::cout << std::endl;
+//   pTree->InOrder( std::cout );
+//   std::cout << std::endl;
+//   pTree->PostOrder( std::cout );
+//
+//}
+//
 

@@ -323,7 +323,6 @@ void WelshPowellColoredGraph ( std::ostream& output, SimpleGraph* pGraph )
    }
 
    int index = 0;
-   int thisTimeColoured = 0;
    bool hasColoured = true;   // Tricky initialization for the loop to work correctly
    for ( int loop = 0, color = 1; true == hasColoured; loop++, color++ )
    {
@@ -336,7 +335,6 @@ void WelshPowellColoredGraph ( std::ostream& output, SimpleGraph* pGraph )
          if ( 0 == vertexList[index].m_color )
          {
             vertexList[index].m_color = color;
-            thisTimeColoured = index;
             hasColoured = true;
          }
       }
@@ -377,40 +375,40 @@ void WelshPowellColoredGraph ( std::ostream& output, SimpleGraph* pGraph )
 
 }
 
-int main ()
-{
-   SimpleGraph*   pGraph = new SimpleGraph( "ValeDosSinos" );
-
-   Vertex*  pVertex0 = new Vertex ( 0, "Novo Hamburgo" );
-   Vertex*  pVertex1 = new Vertex ( 1, "Sao Leopoldo" );
-   Vertex*  pVertex2 = new Vertex ( 2, "Campo Bom" );
-   Vertex*  pVertex3 = new Vertex ( 3, "Ivoti" );
-   Vertex*  pVertex4 = new Vertex ( 4, "Estancia Velha" );
-   Vertex*  pVertex5 = new Vertex ( 5, "Dois Irmaos" );
-   Vertex*  pVertex6 = new Vertex ( 6, "Presidente Lucena" );
-
-   new Edge (0, 10, pVertex1, pVertex0 );
-   new Edge (1,  5, pVertex0, pVertex2 );
-   new Edge (2, 20, pVertex0, pVertex5 );
-   new Edge (3,  5, pVertex2, pVertex5 );
-   new Edge (4,  8, pVertex0, pVertex4 );
-   new Edge (5,  8, pVertex4, pVertex3 );
-   new Edge (6, 15, pVertex0, pVertex3 );
-   new Edge (7,  9, pVertex3, pVertex6 );
-
-   pGraph->AddVertex( pVertex1 );
-   pGraph->AddVertex( pVertex0 );
-   pGraph->AddVertex( pVertex2 );
-   pGraph->AddVertex( pVertex3 );
-   pGraph->AddVertex( pVertex4 );
-   pGraph->AddVertex( pVertex5 );
-   pGraph->AddVertex( pVertex6 );
-
-   pGraph->Display( std::cout );
-
-   //DijkstraOptimized( std::cout, pGraph, "Novo Hamburgo" );
-   WelshPowellColoredGraph (std::cout, pGraph);
-
-}
-
-
+//int main ()
+//{
+//   SimpleGraph*   pGraph = new SimpleGraph( "ValeDosSinos" );
+//
+//   Vertex*  pVertex0 = new Vertex ( 0, "Novo Hamburgo" );
+//   Vertex*  pVertex1 = new Vertex ( 1, "Sao Leopoldo" );
+//   Vertex*  pVertex2 = new Vertex ( 2, "Campo Bom" );
+//   Vertex*  pVertex3 = new Vertex ( 3, "Ivoti" );
+//   Vertex*  pVertex4 = new Vertex ( 4, "Estancia Velha" );
+//   Vertex*  pVertex5 = new Vertex ( 5, "Dois Irmaos" );
+//   Vertex*  pVertex6 = new Vertex ( 6, "Presidente Lucena" );
+//
+//   new Edge (0, 10, pVertex1, pVertex0 );
+//   new Edge (1,  5, pVertex0, pVertex2 );
+//   new Edge (2, 20, pVertex0, pVertex5 );
+//   new Edge (3,  5, pVertex2, pVertex5 );
+//   new Edge (4,  8, pVertex0, pVertex4 );
+//   new Edge (5,  8, pVertex4, pVertex3 );
+//   new Edge (6, 15, pVertex0, pVertex3 );
+//   new Edge (7,  9, pVertex3, pVertex6 );
+//
+//   pGraph->AddVertex( pVertex1 );
+//   pGraph->AddVertex( pVertex0 );
+//   pGraph->AddVertex( pVertex2 );
+//   pGraph->AddVertex( pVertex3 );
+//   pGraph->AddVertex( pVertex4 );
+//   pGraph->AddVertex( pVertex5 );
+//   pGraph->AddVertex( pVertex6 );
+//
+//   pGraph->Display( std::cout );
+//
+//   //DijkstraOptimized( std::cout, pGraph, "Novo Hamburgo" );
+//   WelshPowellColoredGraph (std::cout, pGraph);
+//
+//}
+//
+//
